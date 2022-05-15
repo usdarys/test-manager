@@ -17,11 +17,7 @@
 				</div>
 			</fieldset>
 
-			@if ($errors->any())
-				@foreach ($errors->all() as $error)
-					<div class="alert alert-danger mb-1">{{ $error }}</div>
-				@endforeach
-			@endif
+			<x-errors/>
 
 			{{-- {if $msgs->isInfo()}
 				{foreach $msgs->getInfos() as $msg}

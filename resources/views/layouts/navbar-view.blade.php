@@ -9,16 +9,16 @@
 	  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
-					<a href="{url action="testRunList"}" class="nav-link">Przebiegi testów</a>
+					<a href="{{ route('test-run.index') }}" class="nav-link">Przebiegi testów</a>
 				</li>
 				{{-- {if \core\RoleUtils::inRoles(["Admin", "Test Leader"])}  --}}
 					<li class="nav-item">
-						<a href="{url action="testCaseList"}" class="nav-link">Przypadki testowe</a>
+						<a href="{{ route('test-case.index') }}" class="nav-link">Przypadki testowe</a>
 					</li>
 				{{-- {/if}
 				{if \core\RoleUtils::inRole("Admin")}  --}}
 					<li class="nav-item">
-						<a class="nav-link" href="{url action="userList"}">Użytkownicy</a>
+						{{-- <a class="nav-link" href="{{ route('user.index') }}">Użytkownicy</a> --}}
 					</li>
 				{{-- {/if} --}}
 			</ul>

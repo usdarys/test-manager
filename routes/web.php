@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\TestCaseController;
+use App\Http\Controllers\TestRunController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::get('/', [TestRunController::class, 'index']);
+
+    Route::resource('test-run', TestRunController::class)->only([
+        'index'
+    ]);
+
+    Route::resource('test-case', TestCaseController::class)->only([
+        'index', 'create', 'store'
+    ]);
+});
 
 require __DIR__.'/auth.php';
