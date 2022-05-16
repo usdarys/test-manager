@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTestCaseRequest;
 use App\Models\TestCase;
 use Illuminate\Http\Request;
 
@@ -36,9 +37,16 @@ class TestCaseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTestCaseRequest $request)
     {
-        //
+        $testCase = new TestCase();
+        $testCase->name = $request->name;
+        $testCase->preconditions = $request->preconditions;
+        $testCase->steps = $request->steps;
+        $testCase->expected_result = $request->expected_result;
+        $testCase->save();
+
+        return redirect()->route('test-case.index');
     }
 
     /**

@@ -34,6 +34,13 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'email.required' => 'Podaj email',
+            'password.required' => 'Podaj hasło'
+        ];
+    }
     /**
      * Attempt to authenticate the request's credentials.
      *
