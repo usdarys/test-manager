@@ -19,12 +19,6 @@
 
 			<x-errors/>
 
-			{{-- {if $msgs->isInfo()}
-				{foreach $msgs->getInfos() as $msg}
-					<div class="alert alert-info mb-1">{$msg->text}</div>
-				{/foreach}
-			{/if} --}}
-
 			<input type="submit" value="Zaloguj" class="btn btn-success btn-lg w-100 mt-2"/>
 		</form>	
 	</div>	

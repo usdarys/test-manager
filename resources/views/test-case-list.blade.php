@@ -3,7 +3,7 @@
 @section('main')
 	<div class="container d-flex justify-content-center credit-calc-form flex-column">
         <h4 class="border-bottom mb-3 mt-3">Przypadki testowe</h4>
-        {{-- {include file="messages.tpl"} --}}
+        <x-status/>
         <ul class="nav mb-3 mt-3">
             <li class="nav-item">
                 <a href="{{ route('test-case.create') }}" class="btn btn-success">Dodaj</a>
