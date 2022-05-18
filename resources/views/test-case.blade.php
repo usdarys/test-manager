@@ -5,7 +5,6 @@
         <h4 class="border-bottom mb-3 mt-3">Nowy przypadek testowy</h4>
         <form action="{{ route('test-case.store') }}"  method="POST" class="mb-3">
             @csrf
-            <input type="hidden" name="id" value="{$form->id}">
             <div class="mb-3">
                 <label for="name_id" class="form-label">Nazwa</label>
                 <input type="text" class="form-control" id="name_id" name="name" value="{{ old('name') }}">

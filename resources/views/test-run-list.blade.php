@@ -3,11 +3,11 @@
 @section('main')
 <div class="container d-flex justify-content-center credit-calc-form flex-column">
     <h4 class="border-bottom mb-3 mt-3">Przebiegi testów</h4>
-    {{-- {include file="messages.tpl"} --}}
+    <x-status/>
     <ul class="nav mb-3 mt-3">
         {{-- {if \core\RoleUtils::inRoles(["Admin", "Test Leader"])}  --}}
             <li class="nav-item">
-                <a href="{url action="testRunSave"}" class="btn btn-success">Dodaj</a>
+                <a href="{{ route('test-run.create') }}" class="btn btn-success">Dodaj</a>
             </li>
         {{-- {{/if}} --}}
         <li>
@@ -37,19 +37,19 @@
         </tr>
     </thead>
     <tbody>
-    {foreach $testRunList as $testRun}
+    @foreach ($testRunList as $testRun)
         <tr>
-            <th scope="row">{$testRun["id"]}</th>
-            <td><a href="{url action="testResultList" testRunId=$testRun["id"]}" class="text-decoration-none">{$testRun["name"]}</a></td>
-            <td class="fw-normal text-muted">{$testRun["date_created"]}</td>
+            <th scope="row">{{ $testRun->id }}</th>
+            <td><a href="{url action="testResultList" testRunId=$testRun["id"]}" class="text-decoration-none">{{ $testRun->name }}/a></td>
+            <td class="fw-normal text-muted">{{ $testRun->created_at }}</td>
             <td class="fw-normal text-muted">{$testRun["tested"]} / {$testRun["all"]} ({round(($testRun["tested"]*100)/$testRun["all"], 2)}%)</td>
             <td class="d-flex justify-content-end">
                 <a href="{url action="testResultList" testRunId=$testRun["id"]}" class="text-decoration-none">></a>
-                {* <a href="{url action="testRunUpdate" id=$testRun["id"]}" class="btn btn-sm btn-outline-secondary me-2">Edytuj</a>
-                <a href="{url action="testRunDelete" id=$testRun["id"]}" class="btn btn-sm btn-outline-danger">Usuń</a> *}
+                {{-- <a href="{url action="testRunUpdate" id=$testRun["id"]}" class="btn btn-sm btn-outline-secondary me-2">Edytuj</a>
+                <a href="{url action="testRunDelete" id=$testRun["id"]}" class="btn btn-sm btn-outline-danger">Usuń</a> --}}
             </td>
-        </tr>
-    {/foreach}
+        </tr>       
+    @endforeach
     </tbody>
 </table>
 </div>

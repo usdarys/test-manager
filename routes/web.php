@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [TestRunController::class, 'index']);
 
     Route::resource('test-run', TestRunController::class)->only([
-        'index'
+        'index', 'create', 'store'
     ]);
 
     Route::resource('test-case', TestCaseController::class)->only([

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TestCase;
+use App\Models\TestRun;
 use Illuminate\Http\Request;
 
 class TestRunController extends Controller
@@ -13,7 +15,10 @@ class TestRunController extends Controller
      */
     public function index()
     {
-        return view('test-run-list');
+        $testRunList = TestRun::all(['id', 'name', 'created_at']);
+        return view('test-run-list', [
+            'testRunList' => $testRunList
+        ]);
     }
 
     /**
@@ -23,7 +28,10 @@ class TestRunController extends Controller
      */
     public function create()
     {
-        //
+        $testCaseList = TestCase::all(['id', 'name']);
+        return view('test-run', [
+            'testCaseList' => $testCaseList
+        ]);
     }
 
     /**
