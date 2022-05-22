@@ -40,7 +40,7 @@
     @foreach ($testRunList as $testRun)
         <tr>
             <th scope="row">{{ $testRun->id }}</th>
-            <td><a href="{url action="testResultList" testRunId=$testRun["id"]}" class="text-decoration-none">{{ $testRun->name }}/a></td>
+            <td><a href="{url action="testResultList" testRunId=$testRun["id"]}" class="text-decoration-none">{{ $testRun->name }}</a></td>
             <td class="fw-normal text-muted">{{ $testRun->created_at }}</td>
             <td class="fw-normal text-muted">{$testRun["tested"]} / {$testRun["all"]} ({round(($testRun["tested"]*100)/$testRun["all"], 2)}%)</td>
             <td class="d-flex justify-content-end">

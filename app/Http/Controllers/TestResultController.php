@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TestResult;
 use Illuminate\Http\Request;
 
 class TestResultController extends Controller
@@ -13,7 +14,7 @@ class TestResultController extends Controller
      */
     public function index()
     {
-        //
+        return view('test-result-list');
     }
 
     /**
@@ -23,7 +24,7 @@ class TestResultController extends Controller
      */
     public function create()
     {
-        //
+        return view('test-result');
     }
 
     /**

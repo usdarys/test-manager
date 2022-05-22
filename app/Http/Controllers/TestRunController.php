@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTestRunRequest;
 use App\Models\TestCase;
 use App\Models\TestRun;
 use Illuminate\Http\Request;
@@ -40,9 +41,17 @@ class TestRunController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTestRunRequest $request)
     {
-        //
+        $testRun = new TestRun();
+        $testRun->name = $request->name;
+        $testRun->description = $request->description;
+        $testRun->save();
+
+        // dodac nowe results
+
+        $request->session()->flash('status', 'Dodano nowy przebieg');
+        return redirect()->route('test-run.index');
     }
 
     /**
