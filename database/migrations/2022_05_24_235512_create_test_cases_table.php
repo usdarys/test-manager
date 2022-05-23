@@ -19,7 +19,9 @@ return new class extends Migration
             $table->text('preconditions')->nullable();
             $table->text('steps');
             $table->text('expected_result');
+            $table->integer('project_id');
             $table->timestamps();
+            $table->foreign('project_id')->references('id')->on('projects');
         });
     }
 

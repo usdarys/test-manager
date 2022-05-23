@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TestCaseController;
 use App\Http\Controllers\TestRunController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [TestRunController::class, 'index']);
+    Route::get('/', [ProjectController::class, 'index']);
+
+    Route::resource('project', ProjectController::class)->only([
+        'index', 'create', 'store'
+    ]);
 
     Route::resource('test-run', TestRunController::class)->only([
         'index', 'create', 'store'

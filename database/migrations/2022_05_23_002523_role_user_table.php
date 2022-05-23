@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('test_runs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->text('name');
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->integer('role_id');
+            $table->integer('user_id');
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_runs');
+        Schema::dropIfExists('role_user');
     }
 };
