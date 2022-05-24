@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -32,7 +34,11 @@ class UserController extends Controller
     public function create()
     {
         return view('user', [
-            'roles' => Role::all()
+            'user' => new User(),
+            'roles' => Role::all(),
+            'form_title' => 'Nowy użytkownik',
+            'form_action' => route('user.store'),
+            'form_button' => 'Dodaj użytkownika'
         ]);
     }
 
@@ -81,8 +87,15 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {  
+        $user = User::find($id);
+        return view('user', [
+            'user' => User::find($id),
+            'roles' => Role::all(),
+            'form_title' => 'Edycja użytkownika',
+            'form_action' => route('user.update', ['user' => $id]),
+            'form_button' => 'Zapisz zmiany'
+        ]);
     }
 
     /**
@@ -94,7 +107,36 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)]
+        ]);        
+
+        $user = User::find($id);
+        $user->email = $request->email;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+
+        if ($request->filled('password') || $request->filled('password_confirmation')) {
+            $request->validate([
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        $user->roles()->detach();
+        foreach($request->all() as $key => $val) {
+            if (preg_match('/^role_/', $key)) {
+                $user->roles()->attach($val);
+            }
+        }
+
+        session()->flash('status', 'Zapisano uzytkownika');
+        session('team')->refresh();
+        return redirect()->route('user.index');
     }
 
     /**

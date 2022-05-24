@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
     ]);
 
     Route::resource('user', UserController::class)->only([
-        'index', 'create', 'store'
+        'index', 'create', 'store', 'update', 'edit', 'destroy'
     ]);
 
     Route::resource('test-run', TestRunController::class)->only([

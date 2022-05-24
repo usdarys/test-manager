@@ -33,8 +33,8 @@
                     <td>{{ $user->first_name }}</td>
                     <td>{{ $user->last_name }}</td>
                     <td class="d-flex justify-content-end">
-                        <a href="{url action="userUpdate" id=$user["id"]}" class="btn btn-sm btn-outline-secondary me-2 {if $loggedUser != "superadmin" && $user["login"] == "superadmin"}disabled{/if}">Edytuj</a>
-                        <a href="{url action="userDelete" id=$user["id"]}" class="btn btn-sm btn-outline-danger {if $user["login"] == "superadmin"}disabled{/if}">Usuń</a>
+                        <a href="{{ route('user.edit', ['user' => $user->id]) }}" class="btn btn-sm btn-outline-secondary me-2">Edytuj</a>
+                        <a href="{{ route('user.destroy', ['user' => $user->id]) }}" class="btn btn-sm btn-outline-danger">Usuń</a>
                     </td>
                 </tr>               
             @endforeach
