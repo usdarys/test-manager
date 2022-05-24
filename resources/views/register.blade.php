@@ -5,7 +5,7 @@
 	<div class="container d-flex align-items-center login-form">
 		<form action="{{ route('register') }}" method="POST" class="w-100">
 			@csrf
-			<legend class="text-center mb-4">Test Manager</legend>
+			<legend class="text-center mb-4">Nowe konto zespołu</legend>
 			<fieldset>
 				<div class="mb-3">
 					<label for="first_name" class="visually-hidden">Imię: </label>

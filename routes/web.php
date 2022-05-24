@@ -3,6 +3,7 @@
 use App\Http\Controllers\TestCaseController;
 use App\Http\Controllers\TestRunController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [ProjectController::class, 'index']);
 
     Route::resource('project', ProjectController::class)->only([
+        'index', 'create', 'store'
+    ]);
+
+    Route::resource('user', UserController::class)->only([
         'index', 'create', 'store'
     ]);
 

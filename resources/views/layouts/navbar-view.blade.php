@@ -18,7 +18,7 @@
 				{{-- {/if}
 				{if \core\RoleUtils::inRole("Admin")}  --}}
 					<li class="nav-item">
-						{{-- <a class="nav-link" href="{{ route('user.index') }}">Użytkownicy</a> --}}
+						<a class="nav-link" href="{{ route('user.index') }}">Użytkownicy</a>
 					</li>
 				{{-- {/if} --}}
 			</ul>

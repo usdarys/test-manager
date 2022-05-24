@@ -46,7 +46,7 @@ class TestCaseController extends Controller
         $testCase->expected_result = $request->expected_result;
         $testCase->save();
 
-        $request->session()->flash('status', 'Dodano przypadek testowy');
+        session()->flash('status', 'Dodano przypadek testowy');
         return redirect()->route('test-case.index');
     }
 

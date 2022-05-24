@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -13,7 +19,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view('user-list', [
+            'userList' => session('team')->users
+        ]);
     }
 
     /**
@@ -23,7 +31,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user', [
+            'roles' => Role::all()
+        ]);
     }
 
     /**
@@ -32,9 +42,25 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $user = new User();
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->team_id = session('team')->id;
+        $user->save();
+
+        foreach($request->all() as $key => $val) {
+            if (preg_match('/^role_/', $key)) {
+                $user->roles()->attach($val);
+            }
+        }
+
+        session()->flash('status', 'Dodano uzytkownika');
+        session('team')->refresh();
+        return redirect()->route('user.index');
     }
 
     /**

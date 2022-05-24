@@ -32,6 +32,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $team = $request->user()->team;
+        $request->session()->put('team', $team);
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
