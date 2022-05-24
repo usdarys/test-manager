@@ -23,6 +23,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->integer('team_id');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('team_id')->references('id')->on('teams');
         });
     }

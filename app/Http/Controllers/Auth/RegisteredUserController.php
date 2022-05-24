@@ -56,6 +56,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        session()->put('team', $team);
+
         return redirect(RouteServiceProvider::HOME);
     }
 }
