@@ -12,4 +12,8 @@ class Team extends Model
     public function users() {
         return $this->hasMany(User::class);
     }
+
+    public function projects() {
+        return $this->hasMany(Project::class);
+    }
 }

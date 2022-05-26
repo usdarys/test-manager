@@ -1,8 +1,8 @@
-@extends('layouts.navbar-view')
+@extends('layouts.navigation')
 
-@section('main')
+@section('content')
     <div class="container d-flex justify-content-center credit-calc-form flex-column">
-        <h4 class="border-bottom mb-3 mt-3">Nowy przypadek testowy</h4>
+        <h4 class="border-bottom mb-3 mt-4">Nowy przypadek testowy</h4>
         <form action="{{ route('test-case.store') }}"  method="POST" class="mb-3">
             @csrf
             <div class="mb-3">

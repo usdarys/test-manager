@@ -1,8 +1,8 @@
-@extends('layouts.navbar-view')
+@extends('layouts.navigation')
 
-@section('main')
+@section('content')
     <div class="container d-flex justify-content-center credit-calc-form flex-column">
-        <ul class="nav mb-3 mt-3">
+        <ul class="nav mb-3 mt-4">
             <li class="nav-item">
                 <a href="{{ route('test-run.index') }}" class="btn btn-sm btn-outline-success me-2">< Powrót</a>
             </li>       

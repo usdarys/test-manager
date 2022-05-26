@@ -1,10 +1,10 @@
-@extends('layouts.navbar-view')
+@extends('layouts.header')
 
 @section('main')
     <div class="container d-flex justify-content-center credit-calc-form flex-column">
-        <h4 class="border-bottom mb-3 mt-3">Użytkownicy</h4>
+        <h4 class="border-bottom mb-3 mt-4 pb-2">Użytkownicy</h4>
         <x-status/>
-        <ul class="nav mb-3 mt-3">
+        <ul class="nav mt-3 border-bottom pb-3">
             <li class="nav-item">
                 <a href="{{ route('user.create') }}" class="btn btn-success">Dodaj</a>
             </li>
@@ -15,7 +15,7 @@
                 </form>
             </li>
         </ul>
-        <table class="table table-striped align-middle">
+        <table class="table table-striped align-middle mt-1">
         <thead>
             <tr>
                 <th scope="col">ID</th>

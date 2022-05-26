@@ -20,21 +20,23 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', [ProjectController::class, 'index']);
 
-    Route::resource('project', ProjectController::class)->only([
+    Route::resource('/project', ProjectController::class)->only([
         'index', 'create', 'store'
     ]);
 
-    Route::resource('user', UserController::class)->only([
+    Route::resource('/user', UserController::class)->only([
         'index', 'create', 'store', 'update', 'edit', 'destroy'
     ]);
 
-    Route::resource('test-run', TestRunController::class)->only([
-        'index', 'create', 'store'
-    ]);
-
-    Route::resource('test-case', TestCaseController::class)->only([
-        'index', 'create', 'store'
-    ]);
+    Route::prefix('/project/{project_id}')->group(function () {
+        Route::resource('/test-run', TestRunController::class)->only([
+            'index', 'create', 'store'
+        ]);
+    
+        Route::resource('/test-case', TestCaseController::class)->only([
+            'index', 'create', 'store'
+        ]);
+    });
 });
 
 require __DIR__.'/auth.php';

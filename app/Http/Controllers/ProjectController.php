@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProjectRequest;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -13,7 +15,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('project-list');
+        return view('project-list', [
+            'projects' => session('team')->projects
+        ]);
     }
 
     /**
@@ -23,7 +27,12 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('project', [
+            'project' => new Project(),
+            'form_title' => 'Nowy projekt',
+            'form_action' => route('project.store'),
+            'form_button' => 'Utwórz'            
+        ]);
     }
 
     /**
@@ -32,9 +41,16 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
-        //
+        $project = new Project();
+        $project->name = $request->name;
+        $project->team()->associate(session('team'));
+        $project->save();
+
+        session()->flash('status', 'Dodano projekt');
+        session('team')->refresh();
+        return redirect()->route('project.index');
     }
 
     /**

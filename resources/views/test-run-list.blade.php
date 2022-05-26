@@ -1,13 +1,13 @@
-@extends('layouts.navbar-view')
+@extends('layouts.navigation')
 
-@section('main')
+@section('content')
 <div class="container d-flex justify-content-center credit-calc-form flex-column">
     <h4 class="border-bottom mb-3 mt-3">Przebiegi testów</h4>
     <x-status/>
-    <ul class="nav mb-3 mt-3">
+    <ul class="nav mt-3 border-bottom pb-3">
         {{-- {if \core\RoleUtils::inRoles(["Admin", "Test Leader"])}  --}}
             <li class="nav-item">
-                <a href="{{ route('test-run.create') }}" class="btn btn-success">Dodaj</a>
+                {{-- <a href="{{ route('test-run.create') }}" class="btn btn-success">Dodaj</a> --}}
             </li>
         {{-- {{/if}} --}}
         <li>

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTestRunRequest;
 use App\Models\TestCase;
 use App\Models\TestRun;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TestRunController extends Controller
 {
@@ -14,8 +15,11 @@ class TestRunController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        //$projectId = 
+        Log::info($request->url());
+        //session('project')->put('project', )
         $testRunList = TestRun::all(['id', 'name', 'created_at']);
         return view('test-run-list', [
             'testRunList' => $testRunList
