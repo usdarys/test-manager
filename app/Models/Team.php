@@ -16,4 +16,13 @@ class Team extends Model
     public function projects() {
         return $this->hasMany(Project::class);
     }
+
+    public function hasProject(Project $project) {
+        foreach ($this->projects as $p) {
+            if ($p->id == $project->id) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

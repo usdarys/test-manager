@@ -37,7 +37,7 @@
         </tr>
     </thead>
     <tbody>
-    @foreach ($testRunList as $testRun)
+    @foreach ($testRuns as $testRun)
         <tr>
             <th scope="row">{{ $testRun->id }}</th>
             <td><a href="{url action="testResultList" testRunId=$testRun["id"]}" class="text-decoration-none">{{ $testRun->name }}</a></td>

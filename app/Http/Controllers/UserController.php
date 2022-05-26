@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +27,7 @@ class UserController extends Controller
     public function index()
     {
         return view('user-list', [
-            'userList' => session('team')->users
+            'userList' => $this->userService->getUsers()
         ]);
     }
 
@@ -50,22 +55,17 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = new User();
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->team_id = session('team')->id;
-        $user->save();
+        $user = $this->userService->createUser(
+            $request->email,
+            $request->first_name,
+            $request->last_name,
+            $request->password
+        );
 
-        foreach($request->all() as $key => $val) {
-            if (preg_match('/^role_/', $key)) {
-                $user->roles()->attach($val);
-            }
-        }
+        $roles = $this->getRoles($request);
+        $this->userService->updateUserRoles($user, $roles);
 
         session()->flash('status', 'Dodano uzytkownika');
-        session('team')->refresh();
         return redirect()->route('user.index');
     }
 
@@ -88,9 +88,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {  
-        $user = User::find($id);
+        $user = $this->userService->getUserById($id);
+        if (!$user) {
+            abort(404);
+        }
         return view('user', [
-            'user' => User::find($id),
+            'user' => $user,
             'roles' => Role::all(),
             'form_title' => 'Edycja użytkownika',
             'form_action' => route('user.update', ['user' => $id]),
@@ -113,29 +116,29 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)]
         ]);        
 
-        $user = User::find($id);
-        $user->email = $request->email;
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
+        $user = $this->userService->getUserById($id);
+        if (!$user) {
+            abort(404);
+        }
+
+        $this->userService->updateUser(
+            $user,
+            $request->email,
+            $request->first_name,
+            $request->last_name
+        );
 
         if ($request->filled('password') || $request->filled('password_confirmation')) {
             $request->validate([
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
-            $user->password = Hash::make($request->password);
+            $this->userService->updateUserPassword($user, $request->password);
         }
 
-        $user->save();
-
-        $user->roles()->detach();
-        foreach($request->all() as $key => $val) {
-            if (preg_match('/^role_/', $key)) {
-                $user->roles()->attach($val);
-            }
-        }
+        $roles = $this->getRoles($request);
+        $this->userService->updateUserRoles($user, $roles);
 
         session()->flash('status', 'Zapisano uzytkownika');
-        session('team')->refresh();
         return redirect()->route('user.index');
     }
 
@@ -147,10 +150,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
-        
-        session('team')->refresh();
+        $user = $this->userService->getUserById($id);
+        if (!$user) {
+            abort(404);
+        }
+        $this->userService->deleteUser($user);
+
         return redirect()->route('user.index');
+    }
+
+    private function getRoles(Request $request) {
+        $roles = [];
+        foreach($request->all() as $key => $val) {
+            if (preg_match('/^role_/', $key)) {
+                $roles[] = $val;
+            }
+        }
+        return $roles;
     }
 }

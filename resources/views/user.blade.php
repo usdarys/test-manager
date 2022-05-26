@@ -1,6 +1,6 @@
-@extends('layouts.navigation')
+@extends('layouts.header')
 
-@section('content')
+@section('main')
     <div class="container d-flex justify-content-center credit-calc-form flex-column">
         <h4 class="border-bottom mb-3 mt-4">{{ $form_title }}</h4>
         <form action="{{ $form_action }}"  method="POST" class="mb-3">
@@ -51,7 +51,7 @@
                     <input  
                         class="form-check-input" 
                         type="checkbox" 
-                        value="{{ $role->id }}" 
+                        value="{{ $role->name }}" 
                         id="{{ $role->name }}" 
                         name="role_{{ $role->name }}"
                         @if ($user->hasRole($role->name))

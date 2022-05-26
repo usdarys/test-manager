@@ -12,11 +12,16 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rules;
+use App\Services\UserService;
 
 class RegisteredUserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     /**
      * Display the registration view.
      *
@@ -40,23 +45,21 @@ class RegisteredUserController extends Controller
         $team = new Team();
         $team->name = $request->team_name;
         $team->save();
-    
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'team_id' => $team->id
-        ]);
 
-        $role = Role::where('name', 'Admin')->first();
-        $user->roles()->attach($role->id);
+        session()->put('team', $team);
+
+        $user = $this->userService->createUser(
+            $request->email,
+            $request->first_name,
+            $request->last_name,
+            $request->password
+        );
+
+        $this->userService->updateUserRoles($user, ['Admin']);
 
         //event(new Registered($user));
 
         Auth::login($user);
-
-        session()->put('team', $team);
 
         return redirect(RouteServiceProvider::HOME);
     }

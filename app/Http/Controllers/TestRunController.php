@@ -3,13 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTestRunRequest;
+use App\Models\Project;
 use App\Models\TestCase;
 use App\Models\TestRun;
+use App\Services\ProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class TestRunController extends Controller
 {
+    protected $projectService;
+
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,12 +26,14 @@ class TestRunController extends Controller
      */
     public function index(Request $request)
     {
-        //$projectId = 
-        Log::info($request->url());
-        //session('project')->put('project', )
-        $testRunList = TestRun::all(['id', 'name', 'created_at']);
+        $project = $this->projectService->getCurrentProject($request);
+        if (!$project) {
+            abort(404);
+        }
+
         return view('test-run-list', [
-            'testRunList' => $testRunList
+            'testRuns' => $project->testRuns,
+            'project' => $project
         ]);
     }
 
@@ -31,12 +42,11 @@ class TestRunController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $testCaseList = TestCase::all(['id', 'name']);
-        return view('test-run', [
-            'testCaseList' => $testCaseList
-        ]);
+        // return view('test-run', [
+        //     'testCases' => $project->
+        // ]);
     }
 
     /**
@@ -54,7 +64,7 @@ class TestRunController extends Controller
 
         // dodac nowe results
 
-        $request->session()->flash('status', 'Dodano nowy przebieg');
+        session()->flash('status', 'Dodano nowy przebieg');
         return redirect()->route('test-run.index');
     }
 

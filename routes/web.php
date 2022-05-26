@@ -22,20 +22,20 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/project', ProjectController::class)->only([
         'index', 'create', 'store'
-    ]);
+    ])->where(['project' => '[0-9]+']);
 
     Route::resource('/user', UserController::class)->only([
         'index', 'create', 'store', 'update', 'edit', 'destroy'
-    ]);
+    ])->where(['user' => '[0-9]+']);
 
-    Route::prefix('/project/{project_id}')->group(function () {
+    Route::prefix('/{project}')->group(function () {
         Route::resource('/test-run', TestRunController::class)->only([
             'index', 'create', 'store'
-        ]);
+        ])->where(['project' => '[0-9]+', 'test-run' => '[0-9]+']);
     
         Route::resource('/test-case', TestCaseController::class)->only([
             'index', 'create', 'store'
-        ]);
+        ])->where(['project' => '[0-9]+', 'test-case' => '[0-9]+']);
     });
 });
 

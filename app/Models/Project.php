@@ -12,4 +12,12 @@ class Project extends Model
     public function team() {
         return $this->belongsTo(Team::class);
     }
+
+    public function testRuns() {
+        return $this->hasMany(TestRun::class);
+    }
+
+    public function testCases() {
+        return $this->hasMany(TestCase::class);
+    }
 }
