@@ -2,13 +2,10 @@
 
 @section('content')
     <div class="container d-flex justify-content-center credit-calc-form flex-column">
-        <ul class="nav mb-3 mt-4">
-            <li class="nav-item">
-                <a href="{{ route('test-run.index') }}" class="btn btn-sm btn-outline-success me-2">< Powrót</a>
-            </li>       
-        </ul>
-        <h4 class="border-bottom mb-3 mt-3">{{ $testRun->name }}</h4>
-        <p class="p-3 border rounded bg-light">{{ $testRun->description }}</p>
+        <h4 class="border-bottom mb-3 mt-4">{{ $testRun->name }}</h4>
+        @if ($testRun->description)
+            <p class="p-3 border rounded bg-light">{{ $testRun->description }}</p>
+        @endif
         <x-status/>
         <ul class="list-group list-group-flush mb-3 mt-3">
             <li class="list-group-item border-0 d-flex justify-content-center">Wykonane: {$testRunStats["tested"]} / {$testRunStats["all"]}&nbsp;<span class="text-muted"> ({100 - $testRunStats["untested_percent"]}%)</span></li>       
@@ -20,20 +17,7 @@
             <div class="progress-bar bg-danger" role="progressbar" style="width: {$testRunStats["failed_percent"]}%"></div>
             <div class="progress-bar bg-secondary" role="progressbar" style="width: {$testRunStats["untested_percent"]}%"></div>
         </div>
-
-
         <h6 class="mb-3 mt-5">Przypadki testowe:</h6>
-        {{-- <ul class="nav mb-3 mt-3">
-            <li class="nav-item">
-                <a href="{url action="testResultSave"}" class="btn btn-success">Dodaj</a>
-            </li>
-            <li>
-                <form class="d-flex ms-3" action="{url action="testResultList"}" method="POST" >
-                    <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{}">
-                    <button class="btn btn-outline-success btn-sm" type="submit">Szukaj</button>
-                </form>
-            </li>
-        </ul> --}}
         <table class="table table-hover bg-light align-middle">
         <thead>
             <tr>
@@ -46,29 +30,46 @@
             </tr>
         </thead>
         <tbody>
-        @foreach ($testResultList as $testResult)
+        @foreach ($testRun->testCases as $testCase)
             <tr>
-                <th scope="row">{{ $testResult->id }}</th>
-                <td><a href="{url action="testResultUpdate" testRunId=$testRun["id"] testCaseId=$testResult["id"]}" class="text-decoration-none">{{ $testResult->name }}</a></td>
-                <td class="fw-normal text-muted">
-                    {if isset($testResult["first_name"]) && isset($testResult["last_name"])}
+                <th scope="row">{{ $testCase->id }}</th>
+                <td>
+                    <a 
+                        href="{{ route('test-result.edit', ['project' => session('project'), 'testRun' => $testRun, 'testCase' => $testCase]) }}" 
+                        class="text-decoration-none">{{ $testCase->name }}
+                    </a>
+                </td>
+                <td class="fw-normal text-muted"> -
+                    {{-- {if isset($testResult["first_name"]) && isset($testResult["last_name"])}
                         {$testResult["first_name"]} {$testResult["last_name"]}
                     {else}
                         -
-                    {/if}
+                    {/if} --}}
                 </td>
-                <td class="fw-normal text-muted">{if isset($testResult["date_run"])}{$testResult["date_run"]}{else}-{/if}</td>
+                <td class="fw-normal text-muted">
+                    @if ($testCase->result->updated_by)
+                        {{ $testCase->result->updated_at }}
+                    @else
+                        -
+                    @endif
+                </td>
                 <td>
-                    {if $testResult["status"] == \app\types\TestResultStatusType::FAILED}
-                        <span class="badge bg-danger">{$testResult["status"]}</span>
-                    {elseif $testResult["status"] == \app\types\TestResultStatusType::PASSED}
-                        <span class="badge bg-success">{$testResult["status"]}</span>
-                    {else}
-                        <span class="badge bg-secondary">{$testResult["status"]}</span>
-                    {/if}
+                    @switch($testCase->result->status)
+                        @case($statusTypes["PASSED"])
+                        <span class="badge bg-success">Zaliczony</span>
+                            @break
+                        @case($statusTypes["FAILED"])
+                            <span class="badge bg-danger">Niezaliczony</span>
+                            @break
+                        @default
+                            <span class="badge bg-secondary">Niewykonany</span>
+                    @endswitch
                 </td>
                 <td class="d-flex justify-content-end">
-                    <a href="{url action="testResultUpdate" testRunId=$testRun["id"] testCaseId=$testResult["id"]}" class="text-decoration-none">></a>
+                    <a 
+                        href="{{ route('test-result.edit', ['project' => session('project'), 'testRun' => $testRun, 'testCase' => $testCase]) }}" 
+                        class="text-decoration-none">>
+                    </a>
                 </td>
             </tr>
         @endforeach
