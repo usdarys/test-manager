@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\RoleService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,11 +14,12 @@ use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
-    protected $userService;
+    protected $userService, $roleService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, RoleService $roleService)
     {
         $this->userService = $userService;
+        $this->roleService = $roleService;
     }
     /**
      * Display a listing of the resource.
@@ -40,7 +42,7 @@ class UserController extends Controller
     {
         return view('user', [
             'user' => new User(),
-            'roles' => Role::all(),
+            'roles' => $this->roleService->getRoles(),
             'form_title' => 'Nowy użytkownik',
             'form_action' => route('user.store'),
             'form_button' => 'Dodaj użytkownika'
@@ -94,7 +96,7 @@ class UserController extends Controller
         }
         return view('user', [
             'user' => $user,
-            'roles' => Role::all(),
+            'roles' => $this->roleService->getRoles(),
             'form_title' => 'Edycja użytkownika',
             'form_action' => route('user.update', ['user' => $id]),
             'form_button' => 'Zapisz zmiany'

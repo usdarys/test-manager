@@ -4,23 +4,20 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterUserRequest;
-use App\Models\Role;
-use App\Models\Team;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\TeamService;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Services\UserService;
 
 class RegisteredUserController extends Controller
 {
-    protected $userService;
+    protected $userService, $teamService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, TeamService $teamService)
     {
         $this->userService = $userService;
+        $this->teamService = $teamService;
     }
     /**
      * Display the registration view.
@@ -42,10 +39,7 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterUserRequest $request)
     {
-        $team = new Team();
-        $team->name = $request->team_name;
-        $team->save();
-
+        $team = $this->teamService->createTeam($request->team_name);
         session()->put('team', $team);
 
         $user = $this->userService->createUser(

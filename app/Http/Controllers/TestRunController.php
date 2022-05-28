@@ -7,16 +7,18 @@ use App\Models\Project;
 use App\Models\TestCase;
 use App\Models\TestRun;
 use App\Services\ProjectService;
+use App\Services\TestRunService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class TestRunController extends Controller
 {
-    protected $projectService;
+    protected $projectService, $testRunService;
 
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectService $projectService, TestRunService $testRunService)
     {
         $this->projectService = $projectService;
+        $this->testRunService = $testRunService;
     }
 
     /**
@@ -26,14 +28,10 @@ class TestRunController extends Controller
      */
     public function index(Request $request)
     {
-        $project = $this->projectService->getCurrentProject($request);
-        if (!$project) {
-            abort(404);
-        }
+        $project = $this->projectService->validateProject($request);
 
         return view('test-run-list', [
-            'testRuns' => $project->testRuns,
-            'project' => $project
+            'testRuns' => $project->testRuns
         ]);
     }
 

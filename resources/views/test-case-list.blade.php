@@ -6,10 +6,10 @@
         <x-status/>
         <ul class="nav mt-3 border-bottom pb-3">
             <li class="nav-item">
-                <a href="{{ route('test-case.create') }}" class="btn btn-success">Dodaj</a>
+                <a href="{{ route('test-case.create', ['project' => session('project')]) }}" class="btn btn-success">Dodaj</a>
             </li>
             <li>
-                <form class="d-flex ms-3" action="{{ route('test-case.index') }}"  method="POST" >
+                <form class="d-flex ms-3" action="{{ route('test-case.index', ['project' => session('project')]) }}"  method="POST" >
                     <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{$search}">
                     <button class="btn btn-outline-success btn-sm" type="submit">Szukaj</button>
                 </form>
@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-        @foreach ($testCaseList as $testCase)
+        @foreach ($testCases as $testCase)
             <tr>
                 <th scope="row">{{ $testCase->id }}</th>
                 <td>{{ $testCase->name }}</td>

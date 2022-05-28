@@ -5,19 +5,30 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTestCaseRequest;
 use App\Models\TestCase;
 use Illuminate\Http\Request;
+use App\Services\ProjectService;
+use App\Services\TestCaseService;
 
 class TestCaseController extends Controller
 {
+    protected $projectService, $testCaseService;
+
+    public function __construct(ProjectService $projectService, TestCaseService $testCaseService)
+    {
+        $this->projectService = $projectService;
+        $this->testCaseService = $testCaseService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
-        $testCaseList = TestCase::all(['id', 'name']);
+        $project = $this->projectService->validateProject($request);
+
         return view('test-case-list', [
-            'testCaseList' => $testCaseList
+            'testCases' => $this->testCaseService->getTestCasesByProject($project)
         ]);
     }
 
@@ -26,8 +37,9 @@ class TestCaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $this->projectService->validateProject($request);
         return view('test-case');
     }
 
@@ -39,15 +51,18 @@ class TestCaseController extends Controller
      */
     public function store(StoreTestCaseRequest $request)
     {
-        $testCase = new TestCase();
-        $testCase->name = $request->name;
-        $testCase->preconditions = $request->preconditions;
-        $testCase->steps = $request->steps;
-        $testCase->expected_result = $request->expected_result;
-        $testCase->save();
+        $project = $this->projectService->validateProject($request);
+
+        $this->testCaseService->createTestCase(
+            $request->name,
+            $request->preconditions,
+            $request->steps,
+            $request->expected_result,
+            $project
+        );
 
         session()->flash('status', 'Dodano przypadek testowy');
-        return redirect()->route('test-case.index');
+        return redirect()->route('test-case.index', ['project' => $project]);
     }
 
     /**

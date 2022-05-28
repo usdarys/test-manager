@@ -4,15 +4,15 @@
     <h5 class="ms-3 mb-3">
         <small class="text-success">{{ session('team')->name }}</small>
          / 
-        <small class="text-success">{{ $project->name }}</small>
+        <small class="text-success">{{ session('project')->name }}</small>
     </h5>
     <nav>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{{ route('test-run.index', ['project' => $project]) }}">Przebiegi testów</a>
+                <a class="nav-link text-dark" href="{{ route('test-run.index', ['project' => session('project')]) }}">Przebiegi testów</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{{ route('test-case.index', ['project' => $project]) }}">Przypadki testowe</a>
+                <a class="nav-link text-dark" href="{{ route('test-case.index', ['project' => session('project')]) }}">Przypadki testowe</a>
             </li>
         </ul>
     </nav>

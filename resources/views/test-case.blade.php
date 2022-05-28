@@ -3,7 +3,7 @@
 @section('content')
     <div class="container d-flex justify-content-center credit-calc-form flex-column">
         <h4 class="border-bottom mb-3 mt-4">Nowy przypadek testowy</h4>
-        <form action="{{ route('test-case.store') }}"  method="POST" class="mb-3">
+        <form action="{{ route('test-case.store', ['project' => session('project')]) }}"  method="POST" class="mb-3">
             @csrf
             <div class="mb-3">
                 <label for="name_id" class="form-label">Nazwa</label>
@@ -22,7 +22,7 @@
                 <textarea class="form-control" id="expected_result_id" rows="3" name="expected_result">{{ old('expected_result') }}</textarea>
             </div>
             <input type="submit" value="Dodaj przypadek testowy" class="btn btn-success">
-            <a href="{{ route('test-case.index') }}" class="btn btn-outline-danger">Anuluj</a>
+            <a href="{{ route('test-case.index', ['project' => session('project')]) }}" class="btn btn-outline-danger">Anuluj</a>
         </form>
         <x-errors/>
     </div>

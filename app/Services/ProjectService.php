@@ -7,11 +7,12 @@ use App\Models\Project;
 
 class ProjectService 
 {
-    public function getCurrentProject(Request $request) {
+    public function validateProject(Request $request) {
         $project = Project::find(explode('/', $request->path())[0]);
         if (session('team')->hasProject($project)) {
+            session()->put('project', $project);
             return $project;
-        } 
-        return;
+        }
+        abort(404);
     }
 }
