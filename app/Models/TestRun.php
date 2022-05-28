@@ -12,4 +12,13 @@ class TestRun extends Model
     public function project() {
         return $this->belongsTo(Project::class);
     }
+
+    public function testCases() {
+        return $this->belongsToMany(TestCase::class, 'test_results')->as('result')->withPivot(
+            'status',
+            'comment',
+            'updated_by',
+            'updated_at'
+        );
+    }
 }

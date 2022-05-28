@@ -51,14 +51,14 @@
                     <input  
                         class="form-check-input" 
                         type="checkbox" 
-                        value="{{ $role->name }}" 
-                        id="{{ $role->name }}" 
-                        name="role_{{ $role->name }}"
+                        value="{{ $role->id }}" 
+                        id="role_{{ $role->id }}" 
+                        name="role_{{ $role->id }}"
                         @if ($user->hasRole($role->name))
                             checked
                         @endif
                     >
-                    <label class="form-check-label" for="{{ $role->name }}">{{ $role->name }}</label>
+                    <label class="form-check-label" for="role_{{ $role->id }}" >{{ $role->name }}</label>
                 </div>    
             @endforeach
             </div>

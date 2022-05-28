@@ -166,7 +166,7 @@ class UserController extends Controller
         $roles = [];
         foreach($request->all() as $key => $val) {
             if (preg_match('/^role_/', $key)) {
-                $roles[] = $val;
+                $roles[] = $this->roleService->getRoleById($val);
             }
         }
         return $roles;

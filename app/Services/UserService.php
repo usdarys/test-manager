@@ -52,10 +52,7 @@ class UserService
     public function updateUserRoles(User $user, $roles) {
         $user->roles()->detach();
         foreach($roles as $role) {
-            $r = $this->roleService->getRoleByName($role);
-            if ($r) {
-                $user->roles()->attach($r);
-            }
+            $user->roles()->attach($role);
         }
         session('team')->refresh();
     }

@@ -11,6 +11,10 @@ class TestCaseService
         return $project->testCases;
     }
 
+    public function getTestCaseById($id) {
+        return TestCase::find($id);
+    }
+
     public function createTestCase($name, $preconditions, $steps, $expectedResult, Project $project) {
         $testCase = new TestCase();
         $testCase->name = $name;

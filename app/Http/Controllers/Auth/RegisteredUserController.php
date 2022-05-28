@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterUserRequest;
 use App\Providers\RouteServiceProvider;
+use App\Services\RoleService;
 use App\Services\TeamService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -12,12 +13,13 @@ use App\Services\UserService;
 
 class RegisteredUserController extends Controller
 {
-    protected $userService, $teamService;
+    protected $userService, $teamService, $roleService;
 
-    public function __construct(UserService $userService, TeamService $teamService)
+    public function __construct(UserService $userService, TeamService $teamService, RoleService $roleService)
     {
         $this->userService = $userService;
         $this->teamService = $teamService;
+        $this->roleService = $roleService;
     }
     /**
      * Display the registration view.
@@ -49,7 +51,8 @@ class RegisteredUserController extends Controller
             $request->password
         );
 
-        $this->userService->updateUserRoles($user, ['Admin']);
+        $roles[] = $this->roleService->getRoleByName('Admin');
+        $this->userService->updateUserRoles($user, $roles);
 
         //event(new Registered($user));
 

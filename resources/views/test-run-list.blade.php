@@ -2,14 +2,12 @@
 
 @section('content')
 <div class="container d-flex justify-content-center credit-calc-form flex-column">
-    <h4 class="border-bottom mb-3 mt-3">Przebiegi testów</h4>
+    <h4 class="border-bottom mb-3 mt-4">Przebiegi testów</h4>
     <x-status/>
     <ul class="nav mt-3 border-bottom pb-3">
-        {{-- {if \core\RoleUtils::inRoles(["Admin", "Test Leader"])}  --}}
-            <li class="nav-item">
-                {{-- <a href="{{ route('test-run.create') }}" class="btn btn-success">Dodaj</a> --}}
-            </li>
-        {{-- {{/if}} --}}
+        <li class="nav-item">
+            <a href="{{ route('test-run.create', ['project' => session('project')]) }}" class="btn btn-success">Dodaj</a>
+        </li>
         <li>
             <form class="d-flex ms-3" action="{url action="testRunList"}" method="POST" >
                 <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{$search}">

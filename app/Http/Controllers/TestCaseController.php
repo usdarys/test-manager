@@ -39,8 +39,14 @@ class TestCaseController extends Controller
      */
     public function create(Request $request)
     {
-        $this->projectService->validateProject($request);
-        return view('test-case');
+        $project = $this->projectService->validateProject($request);
+
+        return view('test-case', [
+            'testCase' => new TestCase(),
+            'form_title' => 'Nowy przypadek testowy',
+            'form_action' => route('test-case.store', ['project' => $project]),
+            'form_button' => 'Dodaj przypadek testowy'
+        ]);
     }
 
     /**

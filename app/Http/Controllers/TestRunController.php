@@ -4,21 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTestRunRequest;
 use App\Models\Project;
-use App\Models\TestCase;
 use App\Models\TestRun;
 use App\Services\ProjectService;
+use App\Services\TestCaseService;
 use App\Services\TestRunService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class TestRunController extends Controller
 {
-    protected $projectService, $testRunService;
+    protected $projectService, $testRunService, $testCaseService;
 
-    public function __construct(ProjectService $projectService, TestRunService $testRunService)
+    public function __construct(ProjectService $projectService, TestRunService $testRunService, TestCaseService $testCaseService)
     {
         $this->projectService = $projectService;
         $this->testRunService = $testRunService;
+        $this->testCaseService = $testCaseService;
     }
 
     /**
@@ -42,9 +43,15 @@ class TestRunController extends Controller
      */
     public function create(Request $request)
     {
-        // return view('test-run', [
-        //     'testCases' => $project->
-        // ]);
+        $project = $this->projectService->validateProject($request);
+        
+        return view('test-run', [
+            'testRun' => new TestRun(),
+            'testCases' => $this->testCaseService->getTestCasesByProject($project),
+            'form_title' => 'Nowy przebieg testowy',
+            'form_action' => route('test-run.store', ['project' => $project]),
+            'form_button' => 'Dodaj przebieg'
+        ]);
     }
 
     /**
@@ -55,15 +62,19 @@ class TestRunController extends Controller
      */
     public function store(StoreTestRunRequest $request)
     {
-        $testRun = new TestRun();
-        $testRun->name = $request->name;
-        $testRun->description = $request->description;
-        $testRun->save();
+        $project = $this->projectService->validateProject($request);
 
-        // dodac nowe results
+        $testCases = $this->getTestCases($request, $project);
+
+        $this->testRunService->createTestRun(
+            $request->name,
+            $request->description,
+            $project,
+            $testCases
+        );
 
         session()->flash('status', 'Dodano nowy przebieg');
-        return redirect()->route('test-run.index');
+        return redirect()->route('test-run.index', ['project' => $project]);
     }
 
     /**
@@ -109,5 +120,19 @@ class TestRunController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function getTestCases(Request $request, Project $project) {
+        if ($request->include_type == 'all') {
+            $testCases = $this->testCaseService->getTestCasesByProject($project);
+        } else {
+            $testCases = [];
+            foreach($request->all() as $key => $val) {
+                if (preg_match('/^tc_/', $key)) {
+                    $testCases[] = $this->testCaseService->getTestCaseById($val);
+                }
+            }
+        }
+        return $testCases;
     }
 }
