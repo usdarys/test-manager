@@ -1,4 +1,4 @@
-@props(['title' => 'Usunąć element', 'body' => '', 'action' => '', 'confirmButtonName' => 'Usuń', 'cancelButtonName' = 'Anuluj'])
+@props(['title' => 'Usunąć element', 'body' => '', 'action' => '', 'confirmButtonName' => 'Usuń', 'cancelButtonName' => 'Anuluj'])
 
 <div class="modal fade" id="deleteDialog" tabindex="-1" aria-labelledby="deleteDialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

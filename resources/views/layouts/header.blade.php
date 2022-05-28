@@ -16,6 +16,9 @@
 						<a class="nav-link" href="{{ route('user.index') }}">Użytkownicy</a>
 					</li>
 				</ul>
+				<div class="me-3 text-secondary">
+					{{ Auth::user()->email }} | {{ session('team')->name }}
+				</div>
 				<form action="{{ route('logout') }}" method="POST">
 					@csrf
 					<button type="submit" class="btn btn-outline-light btn-sm text-decoration-none">Wyloguj</button>

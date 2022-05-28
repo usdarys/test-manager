@@ -1,10 +1,8 @@
 @extends('layouts.header')
 @section('main')
 <div class='bg-light pt-3 px-3'>
-    <h5 class="ms-3 mb-3">
-        <small class="text-success">{{ session('team')->name }}</small>
-         / 
-        <small class="text-success">{{ session('project')->name }}</small>
+    <h5 class="ms-3 mb-3 text-primary">
+        {{ session('project')->name }}
     </h5>
     <nav>
         <ul class="nav nav-tabs">
