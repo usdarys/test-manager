@@ -34,15 +34,15 @@
                     <td>{{ $user->last_name }}</td>
                     <td class="d-flex justify-content-end">
                         <a href="{{ route('user.edit', ['user' => $user->id]) }}" class="btn btn-sm btn-outline-secondary me-2">Edytuj</a>
-                        <form action="{{ route('user.destroy', ['user' => $user->id]) }}" method="POST">
-                            @csrf 
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Usuń</button>
-                        </form>
+                        <x-delete-button action="{{ route('user.destroy', ['user' => $user->id]) }}"/>
                     </td>
                 </tr>               
             @endforeach
         </tbody>
     </table>
     </div>
+    <x-delete-dialog 
+        title='Usunąć użytkownika?'
+        body='Operacji nie można cofnąć'
+    />
 @endsection

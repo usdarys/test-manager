@@ -158,6 +158,7 @@ class UserController extends Controller
         }
         $this->userService->deleteUser($user);
 
+        session()->flash('status', 'Usunięto uzytkownika');
         return redirect()->route('user.index');
     }
 
