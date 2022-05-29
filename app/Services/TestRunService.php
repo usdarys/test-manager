@@ -34,11 +34,6 @@ class TestRunService
         return $project->testRuns;
     }
 
-    // public function getTestRunsByProjectWithStats(Project $project) {
-    //     return TestRun::where('project_id', $project->id)
-    //                     ->sele
-    // }
-
     public function getTestRunById($id) {
         return TestRun::find($id);
     }

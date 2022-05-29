@@ -24,11 +24,12 @@ class TestResultService
         abort(404);
     }
 
-    public function updateTestResult($testCase, $status, $comment) {
+    public function updateTestResult($testCase, $status, $comment, $user) {
         $testRun = $this->testRunService->getTestRunById($testCase->result->test_run_id);
         $testRun->testCases()->updateExistingPivot($testCase, [
             'status' => $status,
-            'comment' => $comment
+            'comment' => $comment,
+            'updated_by' => $user->id
         ]);
     }
 }

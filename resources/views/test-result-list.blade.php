@@ -39,12 +39,12 @@
                         class="text-decoration-none">{{ $testCase->name }}
                     </a>
                 </td>
-                <td class="fw-normal text-muted"> -
-                    {{-- {if isset($testResult["first_name"]) && isset($testResult["last_name"])}
-                        {$testResult["first_name"]} {$testResult["last_name"]}
-                    {else}
+                <td class="fw-normal text-muted">
+                    @if ($testCase->result->updated_by)
+                        {{ $users->find($testCase->result->updated_by)->email }}
+                    @else
                         -
-                    {/if} --}}
+                    @endif
                 </td>
                 <td class="fw-normal text-muted">
                     @if ($testCase->result->updated_by)

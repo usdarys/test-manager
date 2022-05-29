@@ -6,20 +6,23 @@ use App\Models\TestResult;
 use App\Services\ProjectService;
 use App\Services\TestResultService;
 use App\Services\TestRunService;
+use App\Services\UserService;
 use App\Types\TestResultStatusType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 
 class TestResultController extends Controller
 {
-    protected $testRunService, $projectService, $testResultService;
+    protected $testRunService, $projectService, $testResultService, $userService;
 
-    public function __construct(TestRunService $testRunService, ProjectService $projectService, TestResultService $testResultService)
+    public function __construct(TestRunService $testRunService, ProjectService $projectService, TestResultService $testResultService, UserService $userService)
     {
         $this->testRunService = $testRunService;
         $this->projectService = $projectService;
         $this->testResultService = $testResultService;
+        $this->userService = $userService;
     }
 
     /**
@@ -30,16 +33,12 @@ class TestResultController extends Controller
     public function index(Request $request)
     {
         $testRun = $this->testRunService->validateTestRun($request);
-        // $stats = $this->testRunService->getTestRunStats($testRun);
-        // Log::info($stats['all']);
-        // Log::info($stats['run']);
-        // Log::info($stats['passed']);
-        // Log::info($stats['failed']);
 
         return view('test-result-list', [
             'testRun' => $testRun,
             'statusTypes' => TestResultStatusType::getList(),
-            'stats' => $this->testRunService->getTestRunStats($testRun)
+            'stats' => $this->testRunService->getTestRunStats($testRun),
+            'users' => $this->userService->getUsers()
         ]);
     }
 
@@ -75,7 +74,8 @@ class TestResultController extends Controller
         $this->testResultService->updateTestResult(
             $testCase,
             $request->status,
-            $request->comment
+            $request->comment,
+            $request->user()
         );
 
         return redirect()->route('test-result.index', ['project' => session('project'), 'testRun' => $testCase->result->test_run_id]);
