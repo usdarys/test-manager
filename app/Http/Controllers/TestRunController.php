@@ -10,6 +10,7 @@ use App\Services\TestCaseService;
 use App\Services\TestRunService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
 
 class TestRunController extends Controller
 {
@@ -29,6 +30,8 @@ class TestRunController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $project = $this->projectService->validateProject($request);
 
         return view('test-run-list', [
@@ -43,6 +46,8 @@ class TestRunController extends Controller
      */
     public function create(Request $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $project = $this->projectService->validateProject($request);
         
         return view('test-run', [
@@ -62,6 +67,8 @@ class TestRunController extends Controller
      */
     public function store(StoreTestRunRequest $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $project = $this->projectService->validateProject($request);
 
         $testCases = $this->getTestCases($request, $project);

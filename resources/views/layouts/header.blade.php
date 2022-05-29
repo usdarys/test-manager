@@ -12,9 +12,11 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ route('project.index') }}">Projekty</a>
 					</li>
+					@if (Auth::user()->hasRoles(['Admin']))
 					<li class="nav-item">
 						<a class="nav-link" href="{{ route('user.index') }}">Użytkownicy</a>
 					</li>
+					@endif
 				</ul>
 				<div class="me-3 text-secondary">
 					{{ Auth::user()->email }} | {{ session('team')->name }}

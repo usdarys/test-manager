@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -28,6 +29,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         return view('user-list', [
             'userList' => $this->userService->getUsers()
         ]);
@@ -40,6 +43,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         return view('user', [
             'user' => new User(),
             'roles' => $this->roleService->getRoles(),
@@ -57,6 +62,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         $user = $this->userService->createUser(
             $request->email,
             $request->first_name,
@@ -90,6 +97,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {  
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         $user = $this->userService->getUserById($id);
         if (!$user) {
             abort(404);
@@ -112,6 +121,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -152,6 +163,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         $user = $this->userService->getUserById($id);
         if (!$user) {
             abort(404);

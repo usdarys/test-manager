@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\ProjectService;
 use App\Services\TestCaseService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
 
 class TestCaseController extends Controller
 {
@@ -26,6 +27,8 @@ class TestCaseController extends Controller
      */
     public function index(Request $request)
     {   
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $project = $this->projectService->validateProject($request);
 
         return view('test-case-list', [
@@ -40,6 +43,8 @@ class TestCaseController extends Controller
      */
     public function create(Request $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $project = $this->projectService->validateProject($request);
 
         return view('test-case', [
@@ -58,6 +63,8 @@ class TestCaseController extends Controller
      */
     public function store(StoreTestCaseRequest $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $project = $this->projectService->validateProject($request);
 
         $this->testCaseService->createTestCase(

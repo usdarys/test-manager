@@ -5,9 +5,11 @@
     <h4 class="border-bottom mb-3 mt-4 pb-2">Projekty</h4>
     <x-status/>
     <ul class="nav mt-3 border-bottom pb-3">
+        @if (Auth::user()->hasRoles(['Admin']))
         <li class="nav-item">
             <a href="{{ route('project.create') }}" class="btn btn-success">Dodaj</a>
         </li>
+        @endif
         {{-- <li>
             <form class="d-flex ms-3" action="{url action="userList"}" method="POST" >
                 <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{$search}">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectController extends Controller
 {
@@ -15,6 +16,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         return view('project-list', [
             'projects' => session('team')->projects
         ]);
@@ -27,6 +30,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         return view('project', [
             'project' => new Project(),
             'form_title' => 'Nowy projekt',
@@ -43,6 +48,8 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
         $project = new Project();
         $project->name = $request->name;
         $project->team()->associate(session('team'));

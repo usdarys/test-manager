@@ -11,6 +11,7 @@ use App\Types\TestResultStatusType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
 
 
 class TestResultController extends Controller
@@ -32,6 +33,8 @@ class TestResultController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $testRun = $this->testRunService->validateTestRun($request);
 
         return view('test-result-list', [
@@ -50,6 +53,8 @@ class TestResultController extends Controller
      */
     public function edit(Request $request)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $testCase = $this->testResultService->validateTestCase($request);
 
         Log::info($testCase);
@@ -69,6 +74,8 @@ class TestResultController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
+
         $testCase = $this->testResultService->validateTestCase($request);
 
         $this->testResultService->updateTestResult(
