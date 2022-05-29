@@ -8,14 +8,14 @@
         @endif
         <x-status/>
         <ul class="list-group list-group-flush mb-3 mt-3">
-            <li class="list-group-item border-0 d-flex justify-content-center">Wykonane: {$testRunStats["tested"]} / {$testRunStats["all"]}&nbsp;<span class="text-muted"> ({100 - $testRunStats["untested_percent"]}%)</span></li>       
-            <li class="list-group-item border-0 d-flex justify-content-center">Zaliczone: {$testRunStats["passed"]}&nbsp;<span class="text-muted"> ({$testRunStats["passed_percent"]}%)</span></li>
-            <li class="list-group-item border-0 d-flex justify-content-center">Niezaliczone: {$testRunStats["failed"]}&nbsp;<span class="text-muted"> ({$testRunStats["failed_percent"]}%)</span></li>
+            <li class="list-group-item border-0 d-flex justify-content-center">Wykonane: {{ $stats['tested'] }} / {{ $stats['all'] }}&nbsp;<span class="text-muted">({{ $stats['testedPercent'] }}%)</span></li>       
+            <li class="list-group-item border-0 d-flex justify-content-center">Zaliczone: {{ $stats['passed'] }}&nbsp;<span class="text-muted">({{ $stats['passedPercent'] }}%)</span></li>
+            <li class="list-group-item border-0 d-flex justify-content-center">Niezaliczone: {{ $stats['failed'] }}&nbsp;<span class="text-muted">({{ $stats['failedPercent'] }}%)</span></li>
         </ul>
         <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" style="width: {$testRunStats["passed_percent"]}%"></div>
-            <div class="progress-bar bg-danger" role="progressbar" style="width: {$testRunStats["failed_percent"]}%"></div>
-            <div class="progress-bar bg-secondary" role="progressbar" style="width: {$testRunStats["untested_percent"]}%"></div>
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $stats['passedPercent'] }}%"></div>
+            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $stats['failedPercent'] }}%"></div>
+            <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ $stats['untestedPercent'] }}%"></div>
         </div>
         <h6 class="mb-3 mt-5">Przypadki testowe:</h6>
         <table class="table table-hover bg-light align-middle">

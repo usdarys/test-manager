@@ -3,7 +3,7 @@
 @section('content')
     <div class="container d-flex justify-content-center credit-calc-form flex-column">
         <h4 class="border-bottom mb-3 mt-4">{{ $testCase->name }}</h4>
-        <form action="{{ route('test-result.update', ['project' => session('project'), 'testRun' => $testCase->result->test_run_id, 'testCase' => $testCase]) }}"  method="PATCH" class="mb-3">
+        <form action="{{ route('test-result.update', ['project' => session('project'), 'testRun' => $testCase->result->test_run_id, 'testCase' => $testCase]) }}"  method="POST" class="mb-3">
             @csrf
             @method('PATCH')
             <div class="mb-3">
@@ -23,7 +23,18 @@
                 <label for="status" class="form-label">Status</label>
                 <select class="form-select" id="status" name="status">
                     @foreach ($statusTypes as $type)
-                        <option value={{ $type }} @if ($type == $testCase->result->status) selected @endif>{{ $type }}</option>
+                        <option value={{ $type }} @if ($type == $testCase->result->status) selected @endif>
+                            @switch($type)
+                                @case('passed')
+                                    Zaliczony
+                                    @break
+                                @case('failed')
+                                    Niezaliczony
+                                    @break
+                                @default
+                                    Niewykonany
+                            @endswitch
+                        </option>
                     @endforeach
                 </select>
             </div>

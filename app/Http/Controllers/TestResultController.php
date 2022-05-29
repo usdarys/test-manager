@@ -30,10 +30,16 @@ class TestResultController extends Controller
     public function index(Request $request)
     {
         $testRun = $this->testRunService->validateTestRun($request);
+        // $stats = $this->testRunService->getTestRunStats($testRun);
+        // Log::info($stats['all']);
+        // Log::info($stats['run']);
+        // Log::info($stats['passed']);
+        // Log::info($stats['failed']);
 
         return view('test-result-list', [
             'testRun' => $testRun,
-            'statusTypes' => TestResultStatusType::getList()
+            'statusTypes' => TestResultStatusType::getList(),
+            'stats' => $this->testRunService->getTestRunStats($testRun)
         ]);
     }
 
@@ -46,6 +52,8 @@ class TestResultController extends Controller
     public function edit(Request $request)
     {
         $testCase = $this->testResultService->validateTestCase($request);
+
+        Log::info($testCase);
 
         return view('test-result', [
             'testCase' => $testCase,
@@ -62,6 +70,14 @@ class TestResultController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $testCase = $this->testResultService->validateTestCase($request);
+
+        $this->testResultService->updateTestResult(
+            $testCase,
+            $request->status,
+            $request->comment
+        );
+
+        return redirect()->route('test-result.index', ['project' => session('project'), 'testRun' => $testCase->result->test_run_id]);
     }
 }
