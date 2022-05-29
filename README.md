@@ -20,3 +20,9 @@ Prosty system do zarządzania testami.
     npm install
     npx mix --production
     ```
+
+## Uruchomienie serwera:
+W katalogu głównym projektu wykonaj:
+```bash
+php artisan serve
+```
