@@ -8,21 +8,23 @@
         <li class="nav-item">
             <a href="{{ route('test-run.create', ['project' => session('project')]) }}" class="btn btn-success">Dodaj</a>
         </li>
-        <li>
-            <form class="d-flex ms-3" action="{url action="testRunList"}" method="POST" >
-                <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{$search}">
+        {{-- <li>
+            <form class="d-flex ms-3" action="{{ route('test-run.index', ['project' => session('project')]) }}"  method="GET" >
+                @csrf
+                <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{{ $search }}">
                 <button class="btn btn-outline-success btn-sm" type="submit">Szukaj</button>
             </form>
         </li>
         <li>
-            <form class="d-flex ms-3" action="{url action="testRunList"}" method="POST" >
+            <form class="d-flex ms-3" action="{{ route('test-run.index', ['project' => session('project')]) }}" method="GET" >
+            @csrf
             <select class="form-select me-2" id="date_sorter" name="date_sorter">
-                <option value="desc" {if !$dateSorter || $dateSorter == "desc"}selected{/if}>od najnowszych</option>
-                <option value="asc" {if $dateSorter == "asc"}selected{/if}>od najstarszych</option>
+                <option value="desc" @if (session('date_sorter') == 'desc') selected @endif>od najnowszych</option>
+                <option value="asc" @if (session('date_sorter') == 'asc') selected @endif>od najstarszych</option>
             </select>
             <button class="btn btn-outline-success btn-sm" type="submit">Sortuj</button>
             </form>
-        </li>
+        </li> --}}
     </ul>
     <table class="table table-hover bg-light align-middle">
     <thead>
@@ -49,6 +51,7 @@
         </tr>       
     @endforeach
     </tbody>
-</table>
+    </table>
+    {{ $testRuns->links() }}
 </div>
 @endsection

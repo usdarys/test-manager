@@ -8,7 +8,11 @@ use App\Models\TestCase;
 class TestCaseService
 {
     public function getTestCasesByProject(Project $project) {
-        return $project->testCases;
+        return TestCase::where('project_id', $project->id)->get();
+    }
+
+    public function getTestCasesByProjectWithPagination(Project $project, $pagination) {
+        return TestCase::where('project_id', $project->id)->paginate($pagination);
     }
 
     public function getTestCaseById($id) {

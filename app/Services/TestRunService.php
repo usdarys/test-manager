@@ -31,7 +31,11 @@ class TestRunService
     }
 
     public function getTestRunsByProject(Project $project) {
-        return $project->testRuns;
+        return TestRun::where('project_id', $project->id)->get();
+    }
+
+    public function getTestRunsByProjectWithPagination(Project $project, $pagination) {
+        return TestRun::where('project_id', $project->id)->paginate($pagination);
     }
 
     public function getTestRunById($id) {

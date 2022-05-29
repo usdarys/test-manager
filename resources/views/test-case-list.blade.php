@@ -8,12 +8,12 @@
             <li class="nav-item">
                 <a href="{{ route('test-case.create', ['project' => session('project')]) }}" class="btn btn-success">Dodaj</a>
             </li>
-            <li>
+            {{-- <li>
                 <form class="d-flex ms-3" action="{{ route('test-case.index', ['project' => session('project')]) }}"  method="POST" >
                     <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{$search}">
                     <button class="btn btn-outline-success btn-sm" type="submit">Szukaj</button>
                 </form>
-            </li>
+            </li> --}}
         </ul>
         <table class="table table-striped align-middle">
         <thead>
@@ -36,5 +36,6 @@
         @endforeach
         </tbody>
     </table>
+    {{ $testCases->links() }}
     </div>
 @endsection

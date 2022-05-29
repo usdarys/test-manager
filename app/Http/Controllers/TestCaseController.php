@@ -32,7 +32,7 @@ class TestCaseController extends Controller
         $project = $this->projectService->validateProject($request);
 
         return view('test-case-list', [
-            'testCases' => $this->testCaseService->getTestCasesByProject($project)
+            'testCases' => $this->testCaseService->getTestCasesByProjectWithPagination($project, 5)
         ]);
     }
 

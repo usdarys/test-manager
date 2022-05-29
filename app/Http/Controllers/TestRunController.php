@@ -35,7 +35,7 @@ class TestRunController extends Controller
         $project = $this->projectService->validateProject($request);
 
         return view('test-run-list', [
-            'testRuns' => $project->testRuns
+            'testRuns' => $this->testRunService->getTestRunsByProjectWithPagination($project, 5)
         ]);
     }
 

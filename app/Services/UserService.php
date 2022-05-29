@@ -16,7 +16,11 @@ class UserService
     }
 
     public function getUsers() {
-        return session('team')->users;
+        return User::where('team_id', session('team')->id)->get();
+    }
+
+    public function getUsersWithPagination($pagination) {
+        return User::where('team_id', session('team')->id)->paginate($pagination);
     }
 
     public function getUserById($id) {

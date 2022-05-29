@@ -8,12 +8,12 @@
             <li class="nav-item">
                 <a href="{{ route('user.create') }}" class="btn btn-success">Dodaj</a>
             </li>
-            <li>
+            {{-- <li>
                 <form class="d-flex ms-3" action="{url action="userList"}" method="POST" >
                     <input class="form-control me-2" type="search" name="search" aria-label="Search" value="{$search}">
                     <button class="btn btn-outline-success btn-sm" type="submit">Szukaj</button>
                 </form>
-            </li>
+            </li> --}}
         </ul>
         <table class="table table-striped align-middle mt-1">
         <thead>
@@ -40,6 +40,7 @@
             @endforeach
         </tbody>
     </table>
+    {{ $userList->links() }}
     </div>
     <x-delete-dialog 
         title='Usunąć użytkownika?'

@@ -32,7 +32,7 @@ class UserController extends Controller
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
 
         return view('user-list', [
-            'userList' => $this->userService->getUsers()
+            'userList' => $this->userService->getUsersWithPagination(5)
         ]);
     }
 
