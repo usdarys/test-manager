@@ -45,8 +45,10 @@
                     </div>
                     </li>
                 @endforeach
+                {{-- <div class="mt-3">
+                    {{ $testCases->links() }}
+                </div> --}}
             </ul>
-
             <input type="submit" value="{{ $form_button }}" class="btn btn-success mt-3">
             <a href="{{ route('test-run.index', ['project' => session('project')]) }}" class="btn btn-outline-danger mt-3">Anuluj</a>
         </form>

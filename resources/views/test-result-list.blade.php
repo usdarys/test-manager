@@ -30,7 +30,7 @@
             </tr>
         </thead>
         <tbody>
-        @foreach ($testRun->testCases as $testCase)
+        @foreach ($testCases as $testCase)
             <tr>
                 <th scope="row">{{ $testCase->id }}</th>
                 <td>
@@ -75,5 +75,6 @@
         @endforeach
         </tbody>
     </table>
+    {{ $testCases->links() }}
     </div>
 @endsection
