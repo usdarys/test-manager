@@ -31,7 +31,16 @@ class UserController extends Controller
     {
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
 
-        return view('user-list', [
+        return view('user.page', [
+            'userList' => $this->userService->getUsers(5)
+        ]);
+    }
+
+    public function getList()
+    {
+        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+
+        return view('user.list', [
             'userList' => $this->userService->getUsers(5)
         ]);
     }
@@ -45,7 +54,7 @@ class UserController extends Controller
     {
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
 
-        return view('user', [
+        return view('user.form', [
             'user' => new User(),
             'roles' => $this->roleService->getRoles(),
             'form_title' => 'Nowy użytkownik',
@@ -103,7 +112,7 @@ class UserController extends Controller
         if (!$user) {
             abort(404);
         }
-        return view('user', [
+        return view('user.form', [
             'user' => $user,
             'roles' => $this->roleService->getRoles(),
             'form_title' => 'Edycja użytkownika',
