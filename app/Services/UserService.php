@@ -15,12 +15,12 @@ class UserService
         $this->roleService = $roleService;
     }
 
-    public function getUsers() {
-        return User::where('team_id', session('team')->id)->get();
-    }
-
-    public function getUsersWithPagination($pagination) {
-        return User::where('team_id', session('team')->id)->paginate($pagination);
+    public function getUsers($pagination = null) {
+        $users = User::where('team_id', session('team')->id);
+        if (is_int($pagination)) {
+            return $users->paginate($pagination);
+        }
+        return $users->get();
     }
 
     public function getUserById($id) {

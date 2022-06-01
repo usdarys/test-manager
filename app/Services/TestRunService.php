@@ -30,12 +30,12 @@ class TestRunService
         abort(404);
     }
 
-    public function getTestRunsByProject(Project $project) {
-        return TestRun::where('project_id', $project->id)->get();
-    }
-
-    public function getTestRunsByProjectWithPagination(Project $project, $pagination) {
-        return TestRun::where('project_id', $project->id)->paginate($pagination);
+    public function getTestRunsByProject(Project $project, $pagination = null) {
+        $testRuns = TestRun::where('project_id', $project->id);
+        if (is_int($pagination)) {
+            return $testRuns->paginate($pagination);
+        }
+        return $testRuns->get();
     }
 
     public function getTestRunById($id) {

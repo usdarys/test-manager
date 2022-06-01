@@ -6,9 +6,17 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Services\ProjectService;
 
 class ProjectController extends Controller
 {
+    protected $projectService;
+
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +27,7 @@ class ProjectController extends Controller
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
 
         return view('project-list', [
-            'projects' => session('team')->projects
+            'projects' => $this->projectService->getProjectsByTeam(session('team'))
         ]);
     }
 
@@ -50,13 +58,12 @@ class ProjectController extends Controller
     {
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
 
-        $project = new Project();
-        $project->name = $request->name;
-        $project->team()->associate(session('team'));
-        $project->save();
+        $this->projectService->createProject(
+            $request->name,
+            session('team')
+        );
 
         session()->flash('status', 'Dodano projekt');
-        session('team')->refresh();
         return redirect()->route('project.index');
     }
 
