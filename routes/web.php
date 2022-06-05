@@ -25,9 +25,6 @@ Route::middleware('auth')->group(function () {
             ->only(['index', 'create', 'store'])
             ->where(['project' => '[0-9]+']);
 
-    Route::get('/user/getList', [UserController::class, 'getList'])
-            ->name('user.getList');
-
     Route::resource('/user', UserController::class)
             ->only(['index', 'create', 'store', 'update', 'edit', 'destroy'])
             ->where(['user' => '[0-9]+']);

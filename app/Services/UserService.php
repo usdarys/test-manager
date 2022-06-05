@@ -15,8 +15,19 @@ class UserService
         $this->roleService = $roleService;
     }
 
-    public function getUsers($pagination = null) {
+    public function getUsers($pagination = null, $search = null) {
         $users = User::where('team_id', session('team')->id);
+
+        if (!empty($search)) {
+            $users->where(function($q) use($search) {
+                $q->where('email', 'like', '%' . $search . '%')
+                    ->orWhere('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%');
+            });
+        }
+
+        $users->orderBy('id', 'asc');
+
         if (is_int($pagination)) {
             return $users->paginate($pagination);
         }

@@ -27,21 +27,22 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
 
-        return view('user.page', [
-            'userList' => $this->userService->getUsers(5)
-        ]);
-    }
+        if ($request->ajax()) {
+            Log::info('ajax');
+            $view = 'user.list';
+        } else {
+            Log::info('standard');
+            $view = 'user.page';
+        }
 
-    public function getList()
-    {
-        Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
+        Log::info($request->search);
 
-        return view('user.list', [
-            'userList' => $this->userService->getUsers(5)
+        return view($view, [
+            'userList' => $this->userService->getUsers(2, $request->search)
         ]);
     }
 
