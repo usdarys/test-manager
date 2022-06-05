@@ -7,7 +7,7 @@
     <ul class="nav mt-3 border-bottom pb-3">
         @if (Auth::user()->hasRoles(['Admin']))
         <li class="nav-item">
-            <a href="{{ route('project.create') }}" class="btn btn-success">Dodaj</a>
+            <a href="{{ route('project.create') }}" class="btn btn-success me-3">Dodaj</a>
         </li>
         @endif
         <li>

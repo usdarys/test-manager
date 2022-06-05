@@ -18,6 +18,11 @@
             <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ $stats['untestedPercent'] }}%"></div>
         </div>
         <h6 class="mb-3 mt-5">Przypadki testowe:</h6>
+        <ul class="nav border-bottom pb-3">
+            <li>
+                <x-search/>
+            </li>
+        </ul>
         <div id="paginatedList">
             @include('test-result.list')
         </div>

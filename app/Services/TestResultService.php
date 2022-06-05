@@ -32,4 +32,19 @@ class TestResultService
             'updated_by' => $user->id
         ]);
     }
+
+    public function getTestCasesByTestRun(TestRun $testRun, $pagination = null, $search = null) {
+        $testCases = $testRun->testCases();
+
+        if (!empty($search)) {
+            $testCases->where('name', 'ilike', '%' . $search . '%');
+        }
+
+        $testCases->orderBy('id', 'asc');
+
+        if (is_int($pagination)) {
+            return $testCases->paginate($pagination);
+        }        
+        return $testCases->get();
+    }
 }

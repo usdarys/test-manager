@@ -45,7 +45,7 @@ class TestResultController extends Controller
 
         return view($view, [
             'testRun' => $testRun,
-            'testCases' => $testRun->testCases()->paginate(5),
+            'testCases' => $this->testResultService->getTestCasesByTestRun($testRun, 5, $request->search),
             'statusTypes' => TestResultStatusType::getList(),
             'stats' => $this->testRunService->getTestRunStats($testRun),
             'users' => $this->userService->getUsers()
