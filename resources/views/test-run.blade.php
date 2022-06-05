@@ -18,13 +18,13 @@
             </div>
 
             <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="include_type" id="all" value="all" onclick="hide()" checked>
+                <input class="form-check-input" type="radio" name="include_type" id="all" value="all" checked>
                 <label class="form-check-label" for="all">
                     Dodaj wszystkie przypadki testowe
                 </label>
             </div>
             <div class="form-check mb-3">
-                <input class="form-check-input" type="radio" name="include_type" id="selected" value="selected" onclick="show()">
+                <input class="form-check-input" type="radio" name="include_type" id="selected" value="selected">
                 <label class="form-check-label" for="selected">
                     Dodaj wybrane przypadki testowe
                 </label>
@@ -54,12 +54,4 @@
         </form>
         <x-errors/>
     </div>
-    <script>
-        function show() {
-            document.getElementById("casesList").classList.remove("d-none");
-        }
-        function hide() {
-            document.getElementById("casesList").classList.add("d-none");
-        }
-    </script>
 @endsection
