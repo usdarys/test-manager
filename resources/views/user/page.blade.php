@@ -15,4 +15,5 @@
         <div id="paginatedList">
             @include('user.list')
         </div>
+    </div>
 @endsection

@@ -31,8 +31,14 @@ class TestCaseController extends Controller
 
         $project = $this->projectService->validateProject($request);
 
-        return view('test-case-list', [
-            'testCases' => $this->testCaseService->getTestCasesByProject($project, 5)
+        if ($request->ajax()) {
+            $view = 'test-case.list';
+        } else {
+            $view = 'test-case.page';
+        }
+
+        return view($view, [
+            'testCases' => $this->testCaseService->getTestCasesByProject($project, 10, $request->search)
         ]);
     }
 
@@ -47,7 +53,7 @@ class TestCaseController extends Controller
 
         $project = $this->projectService->validateProject($request);
 
-        return view('test-case', [
+        return view('test-case.form', [
             'testCase' => new TestCase(),
             'form_title' => 'Nowy przypadek testowy',
             'form_action' => route('test-case.store', ['project' => $project]),

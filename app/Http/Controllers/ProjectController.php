@@ -22,12 +22,18 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin', 'Tester']));
 
-        return view('project-list', [
-            'projects' => $this->projectService->getProjectsByTeam(session('team'))
+        if ($request->ajax()) {
+            $view = 'project.list';
+        } else {
+            $view = 'project.page';
+        }
+
+        return view($view, [
+            'projects' => $this->projectService->getProjectsByTeam(session('team'), 5, $request->search)
         ]);
     }
 
@@ -40,7 +46,7 @@ class ProjectController extends Controller
     {
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
 
-        return view('project', [
+        return view('project.form', [
             'project' => new Project(),
             'form_title' => 'Nowy projekt',
             'form_action' => route('project.store'),

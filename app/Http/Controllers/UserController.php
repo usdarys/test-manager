@@ -32,17 +32,13 @@ class UserController extends Controller
         Gate::allowIf(fn ($user) => $user->hasRoles(['Admin']));
 
         if ($request->ajax()) {
-            Log::info('ajax');
             $view = 'user.list';
         } else {
-            Log::info('standard');
             $view = 'user.page';
         }
 
-        Log::info($request->search);
-
         return view($view, [
-            'userList' => $this->userService->getUsers(2, $request->search)
+            'userList' => $this->userService->getUsers(10, $request->search)
         ]);
     }
 

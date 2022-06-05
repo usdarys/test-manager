@@ -20,7 +20,7 @@ class UserService
 
         if (!empty($search)) {
             $users->where(function($q) use($search) {
-                $q->where('email', 'like', '%' . $search . '%')
+                $q->where('email', 'ilike', '%' . $search . '%')
                     ->orWhere('first_name', 'like', '%' . $search . '%')
                     ->orWhere('last_name', 'like', '%' . $search . '%');
             });

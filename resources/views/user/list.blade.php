@@ -24,7 +24,6 @@
     </tbody>
 </table>
 {{ $userList->links() }}
-</div>
 <x-delete-dialog 
     title='Usunąć użytkownika?'
     body='Operacji nie można cofnąć'

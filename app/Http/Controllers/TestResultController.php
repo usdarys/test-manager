@@ -37,7 +37,13 @@ class TestResultController extends Controller
 
         $testRun = $this->testRunService->validateTestRun($request);
 
-        return view('test-result-list', [
+        if ($request->ajax()) {
+            $view = 'test-result.list';
+        } else {
+            $view = 'test-result.page';
+        }
+
+        return view($view, [
             'testRun' => $testRun,
             'testCases' => $testRun->testCases()->paginate(5),
             'statusTypes' => TestResultStatusType::getList(),
@@ -60,7 +66,7 @@ class TestResultController extends Controller
 
         Log::info($testCase);
 
-        return view('test-result', [
+        return view('test-result.form', [
             'testCase' => $testCase,
             'statusTypes' => TestResultStatusType::getList()
         ]);

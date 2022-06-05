@@ -17,8 +17,15 @@ class ProjectService
         abort(404);
     }
 
-    public function getProjectsByTeam(Team $team, $pagination = null) {
+    public function getProjectsByTeam(Team $team, $pagination = null, $search = null) {
         $projects = Project::where('team_id', $team->id);
+
+        if (!empty($search)) {
+            $projects->where('name', 'ilike', '%' . $search . '%');
+        }
+
+        $projects->orderBy('id', 'asc');
+
         if (is_int($pagination)) {
             return $projects->paginate($pagination);
         }

@@ -7,8 +7,15 @@ use App\Models\TestCase;
 
 class TestCaseService
 {
-    public function getTestCasesByProject(Project $project, $pagination = null) {
+    public function getTestCasesByProject(Project $project, $pagination = null, $search = null) {
         $testCases = TestCase::where('project_id', $project->id);
+
+        if (!empty($search)) {
+            $testCases->where('name', 'ilike', '%' . $search . '%');
+        }
+
+        $testCases->orderBy('id', 'asc');
+
         if (is_int($pagination)) {
             return $testCases->paginate($pagination);
         }

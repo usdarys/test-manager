@@ -34,8 +34,14 @@ class TestRunController extends Controller
 
         $project = $this->projectService->validateProject($request);
 
-        return view('test-run-list', [
-            'testRuns' => $this->testRunService->getTestRunsByProject($project, 5)
+        if ($request->ajax()) {
+            $view = 'test-run.list';
+        } else {
+            $view = 'test-run.page';
+        }
+
+        return view($view, [
+            'testRuns' => $this->testRunService->getTestRunsByProject($project, 10, $request->search)
         ]);
     }
 
@@ -50,7 +56,7 @@ class TestRunController extends Controller
 
         $project = $this->projectService->validateProject($request);
         
-        return view('test-run', [
+        return view('test-run.form', [
             'testRun' => new TestRun(),
             'testCases' => $this->testCaseService->getTestCasesByProject($project),
             'form_title' => 'Nowy przebieg testowy',

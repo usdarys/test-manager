@@ -30,11 +30,19 @@ class TestRunService
         abort(404);
     }
 
-    public function getTestRunsByProject(Project $project, $pagination = null) {
+    public function getTestRunsByProject(Project $project, $pagination = null, $search = null) {
         $testRuns = TestRun::where('project_id', $project->id);
+
+        if (!empty($search)) {
+            $testRuns->where('name', 'ilike', '%' . $search . '%');
+        }
+        
+        $testRuns->orderBy('created_at', 'desc');
+
         if (is_int($pagination)) {
             return $testRuns->paginate($pagination);
         }
+
         return $testRuns->get();
     }
 
