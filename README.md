@@ -25,7 +25,12 @@ System oferuje następujące funkcjonalnosci:
 
 2. Skopiuj `.env.example` do głównego katalogu jako `.env` i uzupełnij dane połączeniowe do bazy swoimi danymi.
 
-3. Wykonaj w katalogu głównym projektu:
+3. Upewnij się, ze masz zainstalowany i włączony w `php.ini` odpowiedni moduł do obsługi bazy danych. Przykładowo dla postgresa powinno byc coś mniej więcej takiego:
+    ```
+    extension=php_pgsql.so
+    ```
+
+4. Wykonaj w katalogu głównym projektu:
     ```bash
     composer install
     php artisan key:generate
