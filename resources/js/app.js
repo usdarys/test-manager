@@ -5,6 +5,7 @@ const paginatedList = document.getElementById('paginatedList');
 
 if (paginatedList) {
     let search = '';
+    let filter = {};
 
     paginatedList.addEventListener('click', (e) => {
         let target = e.target;
@@ -46,6 +47,29 @@ if (paginatedList) {
             getData(currentUrl);
         }
     }
+
+    const statusFilter = document.getElementById('status-filter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', (e) => {
+            let selectedOption = statusFilter.options[statusFilter.selectedIndex];
+            selectedOption.selected = 'selected';
+            switch (selectedOption.value) {
+                case 'untested':
+                    filter.testCaseStatus = 'untested';
+                    break;
+                case 'passed':
+                    filter.testCaseStatus = 'passed';
+                    break;
+                case 'failed':
+                    filter.testCaseStatus = 'failed';
+                    break;
+                default:
+                    if (filter.testCaseStatus) delete filter.testCaseStatus
+                    break;
+            }
+            getData(currentUrl);
+        });
+    }
     
     async function getData(url) {
         if (search) {
@@ -54,6 +78,14 @@ if (paginatedList) {
             } else {
                 url += '?search=' + search;
             }
+        }
+
+        if (Object.keys(filter).length !== 0) {
+            if (url.includes('?')) {
+                url += '&filter=' + JSON.stringify(filter);
+            } else {
+                url += '?filter=' + JSON.stringify(filter);
+            } 
         }
     
         const resp = await fetch(url, {

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\TestResult;
 use App\Models\TestRun;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TestResultService
 {
@@ -33,11 +34,15 @@ class TestResultService
         ]);
     }
 
-    public function getTestCasesByTestRun(TestRun $testRun, $pagination = null, $search = null) {
+    public function getTestCasesByTestRun(TestRun $testRun, $pagination = null, $search = null, $filter = null) {
         $testCases = $testRun->testCases();
 
         if (!empty($search)) {
             $testCases->where('name', 'ilike', '%' . $search . '%');
+        }
+
+        if ($filter && $filter->testCaseStatus) {
+            $testCases->wherePivot('status', $filter->testCaseStatus);
         }
 
         $testCases->orderBy('id', 'asc');

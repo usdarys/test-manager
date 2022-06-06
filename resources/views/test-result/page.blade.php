@@ -22,6 +22,14 @@
             <li>
                 <x-search/>
             </li>
+            <li>
+                <select class="form-select me-2" id="status-filter" name="status-filter">
+                    <option value="all" selected>Wszystkie</option>
+                    <option value="untested">Niewykonane</option>
+                    <option value="passed">Zaliczone</option>
+                    <option value="failed">Niezaliczone</option>
+                </select>
+            </li>
         </ul>
         <div id="paginatedList">
             @include('test-result.list')
