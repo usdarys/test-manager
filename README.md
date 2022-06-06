@@ -18,19 +18,19 @@ System oferuje następujące funkcjonalnosci:
 
 ## Instalacja:
 
-1. Pobierz repozytorium
+1. Nalezy pobrac repozytorium
     ```bash
     git clone https://github.com/usdarys/test-manager.git
     ```
 
-2. Skopiuj `.env.example` do głównego katalogu jako `.env` i uzupełnij dane połączeniowe do bazy swoimi danymi.
+2. Skopiowac `.env.example` do głównego katalogu jako `.env` i uzupełnic dane połączeniowe do bazy swoimi danymi.
 
-3. Upewnij się, ze masz zainstalowany i włączony w `php.ini` odpowiedni moduł do obsługi bazy danych. Przykładowo dla postgresa powinno byc coś mniej więcej takiego:
+3. Upewnic się, ze na serwerze jest zainstalowany i włączony w `php.ini` odpowiedni moduł do obsługi bazy danych. Przykładowo dla postgresa powinno byc coś mniej więcej takiego:
     ```
     extension=php_pgsql.so
     ```
 
-4. Wykonaj w katalogu głównym projektu:
+4. Wykonac w katalogu głównym projektu:
     ```bash
     composer install
     php artisan key:generate
@@ -40,8 +40,8 @@ System oferuje następujące funkcjonalnosci:
     npx mix --production
     ```
 
-## Uruchomienie serwera:
-W katalogu głównym projektu wykonaj:
+## Uruchomienie serwera aplikacji:
+W katalogu głównym projektu nalezy wykonac:
 ```bash
 php artisan serve
 ```
